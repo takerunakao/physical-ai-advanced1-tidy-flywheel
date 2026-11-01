@@ -1,0 +1,9 @@
+# Reset the simulator to a seeded initial state.
+int64 seed
+---
+bool ok
+float32[] state          # [tcp_x, tcp_y, tcp_z, tcp_yaw, gripper_opening]
+sensor_msgs/Image front  # policy-resolution camera images of the new state
+sensor_msgs/Image wrist
+float32[] cube_pose      # [x, y, z, yaw]  (privileged; for the teacher and analysis only)
+float32[] bin_pos        # [x, y, z]

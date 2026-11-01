@@ -1,0 +1,18 @@
+# Multi-object scenes: switch to the next instruction "put <obj> in <box>" without resetting the scene.
+int32 obj                # index into tidy_flywheel.sim_multi.OBJECTS
+int32 box                # index into tidy_flywheel.sim_multi.BOXES
+# [u_obj, v_obj, u_drop, v_drop] normalised in the square front view the VLM saw;
+# empty = keep the simulator's exact goal points
+float32[] vlm_points
+bool snap_drop           # keep the VLM's box half but drop at that half's centre (as in the demos)
+---
+bool ok
+string error
+float32[] state
+sensor_msgs/Image front
+sensor_msgs/Image wrist
+float32[] goal_points    # the policy's goal points [u_obj, v_obj, u_box, v_box] (also the last 4 state dims)
+string task
+float32[] drop_offset_mm # drop point relative to the box centre (diagnostic)
+# object-point error vs. the true projection in px at 480 (PRIVILEGED; diagnostic only, -1 if exact points)
+float32 ground_obj_err_px

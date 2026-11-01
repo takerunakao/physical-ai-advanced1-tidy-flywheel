@@ -1,0 +1,9 @@
+# Multi-object scenes: scripted return of the arm to its start pose (gripper open), between instructions.
+---
+bool ok
+float32[] state          # [tcp_x, tcp_y, tcp_z, tcp_yaw, gripper_opening, u_obj, v_obj, u_box, v_box]
+sensor_msgs/Image front  # policy-resolution camera images after homing
+sensor_msgs/Image wrist
+# JSON {object name: box name or ""}. PRIVILEGED simulator state: for scoring only,
+# never fed to the planner, the pointer or the policy.
+string in_box

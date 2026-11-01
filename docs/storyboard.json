@@ -1,0 +1,134 @@
+[
+ {
+  "clip": "outputs/video_src/op_ed/op.mp4"
+ },
+ {
+  "card": "「片付けて」の一言で、ロボットが自分で学び直す",
+  "sub": "VLM が計画・指し示し・失敗の発見を担い、模倣学習の方策を配備しながら鍛える",
+  "sec": 5,
+  "narration": "「片付けて」の一言で、ロボットが自分の失敗に気づき、学び直す。"
+ },
+ {
+  "clip": "outputs/video_src/clips_jp/d200-v2_videos_tidy_all_seed1002.mp4",
+  "speed": 1.5,
+  "label": "学習済み方策 / 1.5 倍速",
+  "caption": "指示は「片付けて」だけ。Claude が画像から手順を立て、物体と置き場所を点で指し、\n模倣学習の方策 (ACT) がカメラ映像だけを見て腕を動かす",
+  "narration": "指示は「片付けて」だけ。クロードがカメラ画像から手順を立て、物体と置き場所を点で指し示します。腕を動かすのは、模倣学習で学んだアクト方策で、カメラの映像だけを見ています。"
+ },
+ {
+  "image": "docs/figures/system.png",
+  "sec": 8,
+  "caption": "成功なら次の手順へ。失敗は判定役の Claude が映像だけで見つけ、\nその場で教師が引き継いだ立て直しを次の学習に足す",
+  "narration": "各手順のあと、判定役のクロードが映像だけで成否を判断します。失敗なら教師が引き継いで立て直し、その実演を次の学習データに加えます。配備するほど、苦手な場面のデータが増えます。"
+ },
+ {
+  "clip": "outputs/video_src/clips_jp/iv_videos_tidy_all_seed3007.mp4",
+  "start": 12.0,
+  "end": 18.8,
+  "speed": 1.5,
+  "label": "配備中 / 1.5 倍速",
+  "caption": "判定役の Claude が手順ごとに映像だけで成否を判定し、円柱を入れ損ねた失敗を発見。\n教師が引き継いで立て直し、その実演が次の学習データになる",
+  "narration": "ここからは、配備中の様子です。"
+ },
+ {
+  "clip": "outputs/video_src/clips_jp/iv_videos_tidy_all_seed3007.mp4",
+  "start": 18.8,
+  "end": 20.0,
+  "speed": 0.5,
+  "label": "判定カード: 0.5 倍速",
+  "caption": "判定役の Claude が手順ごとに映像だけで成否を判定し、円柱を入れ損ねた失敗を発見。\n教師が引き継いで立て直し、その実演が次の学習データになる",
+  "narration": "青いキューブの手順は、判定役が成功と判定しました。"
+ },
+ {
+  "clip": "outputs/video_src/clips_jp/iv_videos_tidy_all_seed3007.mp4",
+  "start": 20.0,
+  "end": 28.0,
+  "speed": 1.5,
+  "label": "配備中 / 1.5 倍速",
+  "caption": "判定役の Claude が手順ごとに映像だけで成否を判定し、円柱を入れ損ねた失敗を発見。\n教師が引き継いで立て直し、その実演が次の学習データになる",
+  "narration": "次は緑の円柱。方策は、箱に入れ損ねてしまいます。"
+ },
+ {
+  "clip": "outputs/video_src/clips_jp/iv_videos_tidy_all_seed3007.mp4",
+  "start": 39.6,
+  "end": 42.0,
+  "speed": 0.5,
+  "label": "判定カード: 0.5 倍速 (方策が止まった 10 秒を省略)",
+  "caption": "判定役の Claude が手順ごとに映像だけで成否を判定し、円柱を入れ損ねた失敗を発見。\n教師が引き継いで立て直し、その実演が次の学習データになる",
+  "narration": "判定役は、この失敗を映像だけで見つけました。"
+ },
+ {
+  "clip": "outputs/video_src/clips_jp/iv_videos_tidy_all_seed3007.mp4",
+  "start": 42.5,
+  "speed": 1.5,
+  "label": "教師が引き継ぎ / 1.5 倍速",
+  "caption": "判定役の Claude が手順ごとに映像だけで成否を判定し、円柱を入れ損ねた失敗を発見。\n教師が引き継いで立て直し、その実演が次の学習データになる",
+  "narration": "教師が引き継いで円柱を入れ直し、この立て直しが、次の学習データになります。"
+ },
+ {
+  "side": [
+   "outputs/video_src/clips_jp/d200-v0_videos_tidy_all_seed1022.mp4",
+   "outputs/video_src/clips_jp/d200-v2_videos_tidy_all_seed1022.mp4"
+  ],
+  "labels": [
+   "学び直す前 (v0) / 2 倍速",
+   "介入で 2 周学び直した後 (v2) / 2 倍速"
+  ],
+  "speed": 2,
+  "ends": [
+   36,
+   null
+  ],
+  "caption": "同じ配置。v0 は青いキューブを赤の上に積んでしまい、円柱も片付かない。v2 は 3 個とも片付けた",
+  "narration": "同じ配置で、学び直す前とあとを比べます。左の学び直す前は、青いキューブを赤の上に積んでしまい、円柱も片付きません。介入データで2周学び直した右は、3個とも片付けました。"
+ },
+ {
+  "side": [
+   "outputs/video_src/clips_jp/commands_d200-v1_videos_cmd2_seed1002.mp4",
+   "outputs/video_src/clips_jp/commands_d200-v1_videos_cmd5_seed1002.mp4"
+  ],
+  "labels": [
+   "「赤いものだけ白い箱にしまって」",
+   "「青いキューブと緑の円柱を片付けて。赤いのはそのままでいい」"
+  ],
+  "speed": 1.5,
+  "caption": "同じ配置でも、指示が変われば片付け方も変わる。否定・一部だけ・言い換えにも従う\n(学習済み方策で 6 種類の指示 × 5 場面、24/30 が指示どおり)",
+  "narration": "指示を変えると、片付け方も変わります。左は「赤いものだけ」。右は「赤いのはそのままでいい」。否定や一部だけの指示にも従い、30回中24回、指示どおりに片付けました。"
+ },
+ {
+  "image": "docs/figures/deploy_flywheel.png",
+  "sec": 8,
+  "caption": "未使用の 100 場面で、3 個とも片付いた割合は 51% → 63% → 78%\n(v0 と v2 の差は McNemar 検定で p = 0.0001)",
+  "narration": "初めて見る100場面で、3個とも片付いた割合は、51%から63%、そして78%へ上がりました。学び直す前との差は、統計的にも有意です。"
+ },
+ {
+  "image": "docs/figures/flywheel.png",
+  "sec": 8,
+  "caption": "単一物体では、VLM の判定だけで回したフライホイールが 23% → 81% → 97% → 99%\n(シミュレータの内部情報は使わない)",
+  "narration": "1つの物体を運ぶ課題では、シミュレータの正解を使わず、ブイエルエムの判定だけでフライホイールを回し、成功率が23%から99%まで伸びました。"
+ },
+ {
+  "image": "docs/figures/audit.png",
+  "sec": 8,
+  "caption": "指示のすり替えが 3 割混ざると成功率 92% → 8%。\nClaude の監査で食い違いを全件見つけて除き、75% まで回復",
+  "narration": "データの監査も試しました。デモの3割で指示がすり替わると、成功率は92%から8%に落ちます。クロードの監査ですり替えを全て除くと、75%まで回復しました。"
+ },
+ {
+  "clip": "outputs/ros_tidy_videos_v2/tidy_seed1003_tidied3.mp4",
+  "speed": 2,
+  "start": 2,
+  "end": 30.4,
+  "label": "ROS 2 Jazzy (Docker) / 2 倍速",
+  "caption": "同じ仕組みを ROS 2 のノード (計画・指し示し・方策・シミュレータ・可視化) として実装。\nDocker の中で d200-v2 を動かし、6 場面中 4 場面で 3 個とも片付けた",
+  "narration": "同じ仕組みを、ロス2のノードとして実装し、ドッカーの中で動かしました。6場面中4場面で、3個とも片付けています。"
+ },
+ {
+  "card": "カメラと VLM だけで、失敗に気づき、学び直す",
+  "sub": "コード: GitHub (説明欄参照)",
+  "sec": 5,
+  "narration": "カメラとブイエルエムだけで、失敗に気づき、学び直す。ご覧いただき、ありがとうございました。"
+ },
+ {
+  "clip": "outputs/video_src/op_ed/ed.mp4"
+ }
+]

@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+.pytest_cache/
+.ruff_cache/
+# generated data and models (versioned on the Hugging Face Hub instead)
+data/
+outputs/
+*.mp4
+*.safetensors
+.env
+# course materials (redistribution prohibited) — never commit
+Physical AI講座*/
+最終課題*/
+.personal_patterns

@@ -1,0 +1,19 @@
+services:
+  tidy:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: tidy-flywheel:latest
+    volumes:
+      - ./tidy_flywheel:/ws/tidy_flywheel
+      - ./ros2_ws/src:/ws/ros2_ws/src
+      - ./data:/ws/data
+      - ./outputs:/ws/outputs
+    env_file:  # ANTHROPIC_API_KEY (+ ANTHROPIC_WORKSPACE_ID) for vlm_node; read at run time, never baked into the image
+      - path: .env
+        required: false
+    environment:
+      - MUJOCO_GL=osmesa
+      - ROS_DOMAIN_ID=7
+    stdin_open: true
+    tty: true

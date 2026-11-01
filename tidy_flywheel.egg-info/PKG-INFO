@@ -1,0 +1,71 @@
+Metadata-Version: 2.4
+Name: tidy-flywheel
+Version: 0.1.0
+Summary: Tabletop tidy-up robot that learns from its own failures: ROS 2 x imitation learning x RobOps data flywheel (MuJoCo, Franka Panda, LeRobot ACT)
+License: MIT
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: NOTICE.md
+Requires-Dist: mujoco==3.14.0
+Requires-Dist: numpy
+Requires-Dist: imageio
+Requires-Dist: imageio-ffmpeg
+Requires-Dist: pyyaml
+Provides-Extra: learn
+Requires-Dist: lerobot[dataset]==0.6.1; extra == "learn"
+Requires-Dist: torch; extra == "learn"
+Requires-Dist: torchvision; extra == "learn"
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Dynamic: license-file
+
+# tidy-flywheel — 失敗から学ぶ片付けロボット
+
+Physical AI 講座 2026 応用編1 最終課題「AI×ロボティクスによる創造的タスクの実現」の提出物。
+
+シミュレータ上の Franka Panda が、卓上に散らばった物体を箱へ片付けます。
+動かすのはスクリプトではなく **視覚模倣学習で得た方策(ACT)** です。方策は最初は失敗します。
+その失敗を **自動で集め、教師に補正させ、学習し直す** データフライホイールを ROS 2 上で回し、
+反復ごとに成功率が上がっていく過程そのものを作品にしました。
+
+> 状態: **開発中**(2026-09-27 着手)。進捗と数値は [`docs/EXPERIMENT_LOG.md`](docs/EXPERIMENT_LOG.md)。
+
+## 構成
+
+```
+                    ┌──────────── Docker (ROS 2 Jazzy, arm64/amd64) ────────────┐
+   /sim/reset ─────▶│ sim_node      MuJoCo, lock-step, 10 Hz, 2 cameras          │
+   /sim/step  ─────▶│   ├─ /sim/frame (obs_t + action_t)   ├─ /camera/*/image_raw │
+                    │ teacher_node  特権情報つきスクリプト教師(デモ・補正デモ)    │
+                    │ policy_node   学習済み ACT を CPU 推論                       │
+                    │ recorder_node /sim/frame → LeRobotDataset v3                │
+                    │ evaluator_node 学習外 seed で N 話評価、失敗話の動画を保存   │
+                    └────────────────────────────────────────────────────────────┘
+                              │ dataset_vK (HF Hub)        ▲ model_vK
+                              ▼                            │
+                         Colab: LeRobot ACT 学習 ──────────┘
+```
+
+- `tidy_flywheel/` — シミュレータ(`sim.py`)、教師(`teacher.py`)、記録・評価。ROS 2 なしでも動く純 Python パッケージ
+- `ros2_ws/src/tidy_interfaces` — `Reset.srv` / `Step.srv` / `Frame.msg`
+- `ros2_ws/src/tidy_ros` — ノード群と launch
+- `docker/` — ROS 2 Jazzy + MuJoCo + LeRobot(CPU)のイメージ
+- `docs/EXPERIMENT_LOG.md` — 日次の実験ログ(レポートの一次資料)
+
+## 動かす
+
+```bash
+# Mac / Linux ネイティブ(ROS 2 なし): 教師のロールアウト
+uv venv --python 3.12 && uv pip install -e ".[learn]"
+python scripts/run_teacher.py --seeds 0-9 --video outputs/teacher.mp4
+
+# ROS 2(Docker)
+docker compose build
+docker compose run --rm tidy ros2 launch tidy_ros teacher.launch.py num_episodes:=10
+```
+
+## ライセンス
+
+コードは MIT。同梱・依存する第三者成果物は [`NOTICE.md`](NOTICE.md) を参照(Panda モデルは MuJoCo Menagerie、Apache-2.0)。

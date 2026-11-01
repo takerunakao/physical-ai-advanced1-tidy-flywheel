@@ -1,0 +1,11 @@
+# Free-form command + camera views -> ordered single-object steps (LLM task planner).
+string command
+sensor_msgs/Image[] views
+string[] view_names      # same length as views, e.g. ["front", "side"]
+string[] attempted       # instructions already executed in this scene
+---
+bool ok
+string error
+string[] objects         # object names, e.g. "blue cube" (one per step)
+string[] boxes           # box names, e.g. "white box"
+string reasoning

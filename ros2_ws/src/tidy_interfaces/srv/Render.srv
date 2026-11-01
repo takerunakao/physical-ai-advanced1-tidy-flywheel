@@ -1,0 +1,7 @@
+# Render one camera of the current scene at size x size pixels (planner / pointer views).
+string camera            # "front" | "side" | "top" | "wrist"
+int32 size
+---
+bool ok
+string error
+sensor_msgs/Image image

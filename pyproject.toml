@@ -1,0 +1,28 @@
+[project]
+name = "tidy-flywheel"
+version = "0.1.0"
+description = "Tabletop tidy-up robot that learns from its own failures: ROS 2 x imitation learning x RobOps data flywheel (MuJoCo, Franka Panda, LeRobot ACT)"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+dependencies = [
+  "mujoco==3.14.0",
+  "numpy",
+  "imageio",
+  "imageio-ffmpeg",
+  "pyyaml",
+]
+
+[project.optional-dependencies]
+learn = ["lerobot[dataset,training]==0.6.1", "torch", "torchvision"]
+dev = ["pytest", "ruff"]
+vlm = ["anthropic", "google-genai"]
+
+[tool.setuptools.packages.find]
+include = ["tidy_flywheel*"]
+
+[tool.setuptools.package-data]
+tidy_flywheel = ["assets/**/*"]
+
+[tool.ruff]
+line-length = 120

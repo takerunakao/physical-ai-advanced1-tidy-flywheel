@@ -1,0 +1,15 @@
+# Advance the simulator by one control step (lock-step).
+float32[] action         # [dx, dy, dz, dyaw, grip]
+---
+bool ok
+float32[] state
+sensor_msgs/Image front
+sensor_msgs/Image wrist
+float32[] cube_pose
+float32[] tcp_cmd        # commanded tcp position [x, y, z]
+bool grasped
+bool success
+bool robot_contact
+bool timeout
+int32 t
+bool wrong_object        # multi scenes: a non-instructed object was moved (always false in the single scene)

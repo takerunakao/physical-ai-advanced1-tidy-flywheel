@@ -1,0 +1,14 @@
+mujoco==3.14.0
+numpy
+imageio
+imageio-ffmpeg
+pyyaml
+
+[dev]
+pytest
+ruff
+
+[learn]
+lerobot[dataset]==0.6.1
+torch
+torchvision

@@ -1,0 +1,50 @@
+[
+ {
+  "command": "片付けて",
+  "expect": {
+   "red cube": "any",
+   "blue cube": "any",
+   "green cylinder": "any"
+  }
+ },
+ {
+  "command": "キューブは黒い箱に、円柱は白い箱に入れて",
+  "expect": {
+   "red cube": "black box",
+   "blue cube": "black box",
+   "green cylinder": "white box"
+  }
+ },
+ {
+  "command": "赤いものだけ白い箱にしまって",
+  "expect": {
+   "red cube": "white box",
+   "blue cube": null,
+   "green cylinder": null
+  }
+ },
+ {
+  "command": "丸いものは片付けなくていいよ。残りは全部黒い箱へ",
+  "expect": {
+   "red cube": "black box",
+   "blue cube": "black box",
+   "green cylinder": null
+  }
+ },
+ {
+  "command": "Put the cylinder in the black box and both cubes in the white box.",
+  "expect": {
+   "red cube": "white box",
+   "blue cube": "white box",
+   "green cylinder": "black box"
+  }
+ },
+ {
+  "command": "青いキューブと緑の円柱を片付けて。赤いのはそのままでいい",
+  "expect": {
+   "blue cube": "any",
+   "green cylinder": "any",
+   "red cube": null
+  }
+ }
+]

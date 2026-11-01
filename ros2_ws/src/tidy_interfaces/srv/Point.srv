@@ -1,0 +1,7 @@
+# VLM grounding: front-camera image + instruction -> [u_obj, v_obj, u_drop, v_drop] (normalised 0-1).
+sensor_msgs/Image image
+string instruction
+---
+bool ok
+string error
+float32[] points

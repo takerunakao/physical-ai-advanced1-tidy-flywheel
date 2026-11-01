@@ -1,0 +1,90 @@
+<mujoco model="tidy multi scene">
+  <!-- Language-instructed tidy-up: three objects, two boxes. One episode = one instruction
+       ("put the <object> in the <box>"); see sim_multi.py. -->
+  <include file="panda/panda.xml"/>
+
+  <option timestep="0.002" integrator="implicitfast" cone="elliptic" impratio="10"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="150" elevation="-25" offwidth="640" offheight="480"/>
+    <quality shadowsize="4096"/>
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.35 0.45 0.6" rgb2="0.05 0.05 0.1" width="512" height="3072"/>
+    <texture type="2d" name="floor_tex" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
+      markrgb="0.8 0.8 0.8" width="300" height="300"/>
+    <material name="floor_mat" texture="floor_tex" texuniform="true" texrepeat="5 5" reflectance="0.1"/>
+    <texture type="2d" name="wood" builtin="flat" rgb1="0.78 0.65 0.45" width="64" height="64"/>
+    <material name="table_mat" texture="wood" texuniform="true" reflectance="0.05"/>
+    <material name="bin_white" rgba="0.92 0.92 0.9 1"/>
+    <material name="bin_black" rgba="0.12 0.12 0.14 1"/>
+    <material name="obj_red" rgba="0.85 0.15 0.15 1"/>
+    <material name="obj_blue" rgba="0.15 0.3 0.85 1"/>
+    <material name="obj_green" rgba="0.15 0.7 0.25 1"/>
+  </asset>
+
+  <default>
+    <default class="obj">
+      <geom condim="4" friction="1.5 0.02 0.001" solref="0.005 1" solimp="0.95 0.99 0.001" priority="1"/>
+    </default>
+  </default>
+
+  <worldbody>
+    <light pos="0.5 0 1.5" dir="0 0 -1" directional="true" castshadow="true"/>
+    <light pos="1.0 0.5 1.0" dir="-0.7 -0.4 -0.6" diffuse="0.3 0.3 0.3" directional="true" castshadow="false"/>
+    <geom name="floor" pos="0 0 -0.75" size="0 0 0.05" type="plane" material="floor_mat"/>
+
+    <!-- Table: top surface at z = 0. The robot base sits on the table. -->
+    <geom name="table" type="box" pos="0.35 0 -0.375" size="0.55 0.5 0.375" material="table_mat"
+      friction="0.8 0.02 0.001"/>
+
+    <!-- Fixed cameras -->
+    <camera name="front" pos="0.95 0.60 0.62" xyaxes="-0.7574 0.6529 0.0000 -0.3899 -0.4522 0.8022" fovy="45"/>
+    <camera name="side" pos="0.5 0.9 0.5" xyaxes="-1 0 0 0 -0.5 0.87" fovy="50"/>
+    <camera name="top" pos="0.45 0.0 1.3" xyaxes="0 1 0 -1 0 0" fovy="50"/>
+
+    <!-- Mocap target: the hand is welded to it (see <equality>). Pose is overwritten at reset. -->
+    <body name="target" mocap="true" pos="0.4 0 0.4" quat="0 1 0 0">
+      <geom type="box" size="0.01 0.01 0.01" contype="0" conaffinity="0" rgba="0 1 0 0" group="4"/>
+    </body>
+
+    <!-- Boxes: open, inner 12 x 12 cm, wall height 6 cm -->
+    <body name="bin0" pos="0.33 -0.28 0">
+      <geom name="bin0_floor" type="box" pos="0 0 0.0025" size="0.065 0.065 0.0025" material="bin_white"/>
+      <geom name="bin0_wall_px" type="box" pos="0.0625 0 0.03" size="0.0025 0.065 0.03" material="bin_white"/>
+      <geom name="bin0_wall_nx" type="box" pos="-0.0625 0 0.03" size="0.0025 0.065 0.03" material="bin_white"/>
+      <geom name="bin0_wall_py" type="box" pos="0 0.0625 0.03" size="0.065 0.0025 0.03" material="bin_white"/>
+      <geom name="bin0_wall_ny" type="box" pos="0 -0.0625 0.03" size="0.065 0.0025 0.03" material="bin_white"/>
+      <site name="bin0_center" pos="0 0 0.0" size="0.005" rgba="0 0 1 0" group="4"/>
+    </body>
+    <body name="bin1" pos="0.57 -0.28 0">
+      <geom name="bin1_floor" type="box" pos="0 0 0.0025" size="0.065 0.065 0.0025" material="bin_black"/>
+      <geom name="bin1_wall_px" type="box" pos="0.0625 0 0.03" size="0.0025 0.065 0.03" material="bin_black"/>
+      <geom name="bin1_wall_nx" type="box" pos="-0.0625 0 0.03" size="0.0025 0.065 0.03" material="bin_black"/>
+      <geom name="bin1_wall_py" type="box" pos="0 0.0625 0.03" size="0.065 0.0025 0.03" material="bin_black"/>
+      <geom name="bin1_wall_ny" type="box" pos="0 -0.0625 0.03" size="0.065 0.0025 0.03" material="bin_black"/>
+      <site name="bin1_center" pos="0 0 0.0" size="0.005" rgba="0 0 1 0" group="4"/>
+    </body>
+
+    <!-- Pickable objects (poses randomised at reset) -->
+    <body name="obj0" pos="0.45 0.05 0.02">
+      <freejoint name="obj0_joint"/>
+      <geom name="obj0_geom" type="box" size="0.02 0.02 0.02" material="obj_red" class="obj" mass="0.06"/>
+    </body>
+    <body name="obj1" pos="0.50 0.15 0.02">
+      <freejoint name="obj1_joint"/>
+      <geom name="obj1_geom" type="box" size="0.02 0.02 0.02" material="obj_blue" class="obj" mass="0.06"/>
+    </body>
+    <body name="obj2" pos="0.55 0.25 0.02">
+      <freejoint name="obj2_joint"/>
+      <geom name="obj2_geom" type="cylinder" size="0.02 0.02" material="obj_green" class="obj" mass="0.06"/>
+    </body>
+  </worldbody>
+
+  <equality>
+    <weld name="hand_weld" body1="target" body2="hand" relpose="0 0 0 1 0 0 0" solref="0.01 1" solimp="0.95 0.99 0.001"/>
+  </equality>
+</mujoco>

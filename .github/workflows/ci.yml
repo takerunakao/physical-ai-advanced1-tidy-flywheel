@@ -1,0 +1,41 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      MUJOCO_GL: osmesa
+      PYOPENGL_PLATFORM: osmesa
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libosmesa6 libgl1 ffmpeg
+      - uses: astral-sh/setup-uv@v5
+      - run: uv venv --python 3.12 && uv pip install -e ".[learn,dev]"
+      - name: Unit tests (env determinism, teacher gate, dataset round-trip)
+        run: .venv/bin/pytest -q tests
+      - name: Teacher smoke rollout
+        run: .venv/bin/python scripts/run_teacher.py --seeds 0-2 --json outputs/ci_teacher.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ci-outputs
+          path: outputs/
+          if-no-files-found: ignore
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build the ROS 2 image (amd64)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          push: false
+          tags: tidy-flywheel:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

@@ -1,0 +1,13 @@
+# Run the visuomotor policy closed-loop through /sim/step until success or timeout, then settle.
+string task                # for logging only; the policy sees the goal points in the state, never text
+float32[] state            # starting observation (as returned by /sim/retarget)
+sensor_msgs/Image front
+sensor_msgs/Image wrist
+---
+bool ok
+string error
+bool success               # after the settle steps
+bool timeout
+bool wrong_object
+bool contact
+int32 steps
